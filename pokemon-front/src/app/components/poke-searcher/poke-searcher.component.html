@@ -1,0 +1,14 @@
+<div class="search-container">
+    <mat-form-field appearance="fill">
+        <mat-label>Enter Pokémon name</mat-label>
+        <input matInput [(ngModel)]="pokemonName" placeholder="Search Pokémon" />
+    </mat-form-field>
+
+    <button mat-raised-button (click)="searchPokemon()">Search</button>
+
+    <div *ngIf="pokemon">
+        <h3>{{ pokemon.name | titlecase }}</h3>
+        <img [src]="pokemon.image" alt="{{ pokemon.name }}" />
+    </div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+</div>
