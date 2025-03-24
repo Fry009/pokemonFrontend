@@ -26,17 +26,35 @@ export class PokeSearcherComponent {
     }
 
     // Realiza la solicitud HTTP a la API de Pokémon
-    this.http.get<any>(`https://pokeapi.co/api/v2/pokemon/${this.pokemonName.toLowerCase()}`)
+    this.http.get<any>(`http://localhost:8000/api/pokemon/${this.pokemonName.toLowerCase()}`)
       .subscribe(
         (response) => {
+          debugger;
           this.pokemon = {
             name: response.name,
-            image: response.sprites.front_default,  // Imagen del Pokémon
+            image: response.sprites.other["official-artwork"].front_default,  // Imagen del Pokémon
           };
           this.error = '';  // Limpiar errores
         },
         (error) => {
           this.error = 'Pokémon not found or error occurred';  // Si hay un error en la API
+        }
+      );
+  }
+
+  savePokemon() {
+    if (!this.pokemon) {
+      this.error = 'Search for a Pokémon first!';
+      return;
+    }
+
+    this.http.post('http://localhost:8000/api/save-pokemon', this.pokemon)
+      .subscribe(
+        () => {
+          alert('Pokémon saved successfully!');
+        },
+        (error) => {
+          this.error = 'Error saving Pokémon';
         }
       );
   }
